@@ -1,2 +1,3 @@
 data:
   init: true
+  upgradeVersion: 1
