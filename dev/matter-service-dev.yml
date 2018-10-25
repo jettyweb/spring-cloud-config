@@ -1,0 +1,145 @@
+#服务配置
+server:
+  #启动端口
+  port: 8102
+  #内置TOMCAT配置
+  tomcat:
+    #uri编码 
+    uri-encoding: UTF-8
+#Spring配置
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  servlet:
+    #文件上传配置
+    multipart:
+      #是否支持批量上传(默认值 true)
+      enabled: true
+      #上传文件的临时目录(一般情况下不用特意修改)
+      location:
+      #上传文件最大为 1M(默认值 1M 根据自身业务自行控制即可)
+      max-file-size: 32Mb
+      #上传请求最大为 10M(默认值10M 根据自身业务自行控制即可)
+      max-request-size: 128Mb
+      #文件大小阈值，当大于这个阈值时将写入到磁盘，否则存在内存中,(默认值0 一般情况下不用特意修改)
+      file-size-threshold: 0
+      #判断是否要延迟解析文件（相当于懒加载，一般情况下不用特意修改）
+      resolve-lazily: false
+  #JACKSON配置    
+  jackson:
+    #日期格式化
+    date-format: yyyy-MM-dd HH:mm:ss
+    #时区设置
+    time-zone: GMT+8
+    serialization:
+       #格式化输出 
+      indent_output: true
+      #忽略无法转换的对象
+      fail_on_empty_beans: false
+    #设置空如何序列化
+    defaultPropertyInclusion: NON_NULL
+    deserialization:
+      #允许对象忽略json中不存在的属性
+      fail_on_unknown_properties: false
+    parser:
+      #允许出现特殊字符和转义符
+      allow_unquoted_control_chars: true
+      #允许出现单引号
+      allow_single_quotes: true
+  #数据库配置
+  datasource: 
+    #数据库主库配置
+    primary: 
+      #驱动名称
+      driver-class-name: com.mysql.jdbc.Driver
+      #链接地址
+      jdbc-url: jdbc:mysql://localhost:3306/db_runonce?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      #用户名
+      username: root
+      #密码
+      password: 123456
+      #数据库连接池类型
+      type: com.alibaba.druid.pool.DruidDataSource
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,wall,log4j
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  #Redis配置
+  redis:
+     #Redis数据库索引(默认为0)
+     database: 0
+     #Redis服务器地址
+     host: 127.0.0.1
+     #是否启用SSL支持。
+     ssl: false
+     #Redis服务器连接端口
+     port: 6379
+     #Redis服务器连接密码(默认为空)
+     password: 
+     #连接超时时间(毫秒)
+     timeout: 2000
+     #Redis连接池配置
+     lettuce:
+       pool:
+         #连接池最大连接数(使用负值表示没有限制)
+         max-active: 100
+         #连接池最大阻塞等待时间(使用负值表示没有限制)
+         max-wait: -1
+         #连接池中的最大空闲连接
+         max-idle: 100
+         #连接池中的最小空闲连接
+         min-idle: 0
+  #liquibase配置
+  liquibase:
+    #是否启动
+    enabled: true
+    #是否检查更改日志位置是否存在
+    check-change-log-location: true
+    #更改日志配置路径
+    change-log: classpath:/data/master.xml
+    #要使用的以‘,’分隔的运行时上下文列表。
+    contexts: update
+
+#文件上传配置
+upload:
+  #上传文件的磁盘存储路径
+  disk: /Users/jiang/testfile/
+
+
+#日志配置
+logging:
+  level:
+    com.runonce: debug
+    com.runonce.mapper: debug
+
+#注册中心配置
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    #serviceUrl:
+      #defaultZone: http://localhost:8000/eureka/
+
+#分页工具配置
+pagehelper:
+  #对应使用数据库
+  helperDialect: mysql
+  #分页合理化参数，默认false。当为true时,pageNum<=0 时会查询第一页,pageNum>pages(超过总数时)会查询最后一页。为false时,直接根据参数进行查询。
+  reasonable: false
+  #支持通过 Mapper 接口参数来传递分页参数
+  supportMethodsArguments: true
+  #从对象中根据属性名取值
+  params: count=countSql
